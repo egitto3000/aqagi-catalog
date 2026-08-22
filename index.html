@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AQAGI Opportunity Catalog</title>
+<meta name="description" content="Browse the AQAGI opportunity catalog: productized AI-assisted services with honest descriptions and entry prices.">
+<link rel="canonical" href="https://egitto3000.github.io/aqagi-catalog/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AQAGI Opportunity Catalog">
+<meta property="og:description" content="Productized AI-assisted service opportunities with honest descriptions and transparent entry prices.">
+<meta property="og:url" content="https://egitto3000.github.io/aqagi-catalog/">
+<meta name="twitter:card" content="summary">
+<style>
+:root{
+  --bg:#0b0e14; --panel:rgba(255,255,255,.04); --panel-b:rgba(255,255,255,.09);
+  --txt:#e6e9ef; --dim:#8b93a7; --acc:#5eead4; --acc2:#818cf8; --warn:#fbbf24;
+  --mono:'SFMono-Regular',ui-monospace,Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--txt);font:16px/1.6 -apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+header{padding:28px 0;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.logo{font-weight:700;letter-spacing:.14em;font-size:15px}
+.logo span{color:var(--acc)}
+.micro{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim)}
+.hero{padding:24px 0 8px;text-align:center}
+.hero h1{font-size:clamp(26px,5vw,40px);line-height:1.15;font-weight:700}
+.hero h1 em{font-style:normal;color:var(--acc)}
+.hero p{color:var(--dim);max-width:640px;margin:12px auto 0;font-size:14px}
+.stats{font-family:var(--mono);font-size:13px;color:var(--acc);margin-top:10px}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 18px}
+.controls input,.controls select{background:#0f1420;border:1px solid var(--panel-b);border-radius:8px;color:var(--txt);padding:10px 14px;font-size:14px;font-family:var(--mono)}
+.controls input{flex:1;min-width:220px}
+.controls input:focus,.controls select:focus{outline:none;border-color:var(--acc)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{background:var(--panel);border:1px solid var(--panel-b);border-radius:14px;padding:18px;backdrop-filter:blur(8px);display:flex;flex-direction:column}
+.pill{display:inline-block;font-size:10px;letter-spacing:.12em;text-transform:uppercase;border:1px solid var(--acc2);color:var(--acc2);border-radius:999px;padding:2px 10px;margin-bottom:10px;align-self:flex-start}
+.card h3{font-size:14px;font-weight:600;line-height:1.4}
+.desc{font-size:13px;color:var(--dim);margin:10px 0 14px;flex:1}
+.price{font-family:var(--mono);font-size:20px;color:var(--acc)}
+.price small{font-size:11px;color:var(--dim)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:6px}
+.btn{display:inline-block;background:var(--acc2);color:#0b0e14;font-weight:700;font-size:13px;border-radius:8px;padding:8px 14px;text-decoration:none;text-align:center}
+.btn.sec{background:transparent;border:1px solid var(--panel-b);color:var(--dim);font-weight:400;font-size:12px}
+.more{display:block;margin:26px auto;background:transparent;border:1px solid var(--acc);color:var(--acc);border-radius:10px;padding:10px 26px;font-size:14px;cursor:pointer}
+.empty{color:var(--dim);text-align:center;padding:40px 0;font-size:14px}
+.honest{border:1px solid var(--panel-b);border-left:3px solid var(--warn);border-radius:10px;padding:14px 16px;margin:22px 0;font-size:13px;color:var(--dim)}
+.honest strong{color:var(--txt)}
+footer{border-top:1px solid var(--panel-b);margin-top:48px;padding:24px 0 40px;font-size:12px;color:var(--dim);display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
+footer a{color:var(--dim)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">AQ<span>AGI</span> <span class="micro">catalog</span></div>
+    <div class="micro" id="updated"></div>
+  </header>
+
+  <div class="hero">
+    <h1>Opportunity <em>Catalog</em></h1>
+    <p>Every entry below comes verbatim from the AQAGI production catalog — real productized service opportunities with honest descriptions and transparent entry prices. Estimates, where shown, are estimates.</p>
+    <div class="stats" id="stats">Loading catalog…</div>
+  </div>
+
+  <div class="honest"><strong>Honesty note.</strong> Descriptions and prices are published exactly as generated in our catalog database. Profit figures, when present, are model estimates, not guarantees.</div>
+
+  <div class="controls">
+    <input id="q" type="search" placeholder="Search titles &amp; descriptions…" aria-label="Search">
+    <select id="fam" aria-label="Family filter"><option value="">All families</option></select>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none">No opportunities match. Try a different search.</div>
+  <button class="more" id="more" style="display:none">Load more</button>
+
+  <footer>
+    <div>&copy; 2026 AQAGI &middot; <a href="https://egitto3000.github.io/aqagi-legal/">Terms &amp; Privacy</a></div>
+    <div>Checkout: <a href="https://egitto3000.github.io/aqagi-credits/">AQAGI Credits</a> &middot; Support: <a href="mailto:egitto3000@gmail.com">egitto3000@gmail.com</a></div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  var all=[], idx=null, shown=0, PAGE=60;
+  var grid=document.getElementById('grid'), q=document.getElementById('q'),
+      fam=document.getElementById('fam'), more=document.getElementById('more'),
+      stats=document.getElementById('stats'), empty=document.getElementById('empty');
+  function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
+  function fmt(n){return n==null?'—':'$'+Number(n).toFixed(2);}
+  function filtered(){
+    var t=q.value.trim().toLowerCase(), f=fam.value;
+    return all.filter(function(o){
+      if(f && o.family!==f) return false;
+      if(t && (o.title+' '+o.excerpt).toLowerCase().indexOf(t)===-1) return false;
+      return true;
+    });
+  }
+  function card(o){
+    var mail='mailto:egitto3000@gmail.com?subject='+encodeURIComponent('Custom engagement: '+o.ref);
+    return '<div class="card"><span class="pill">'+esc(o.family)+'</span>'+
+      '<h3>'+esc(o.title)+'</h3>'+
+      '<div class="desc">'+esc(o.excerpt)+(o.excerpt&&o.excerpt.length>=280?'…':'')+'</div>'+
+      '<div class="price">'+fmt(o.price)+' <small>entry</small></div>'+
+      '<div class="row"><a class="btn" href="https://egitto3000.github.io/aqagi-credits/" rel="noopener">Get started</a>'+
+      '<a class="btn sec" href="'+mail+'">Custom&nbsp;quote</a></div></div>';
+  }
+  function render(reset){
+    var list=filtered();
+    if(reset){shown=0;grid.innerHTML='';}
+    var next=list.slice(shown,shown+PAGE);
+    grid.insertAdjacentHTML('beforeend',next.map(card).join(''));
+    shown+=next.length;
+    more.style.display=shown<list.length?'block':'none';
+    empty.style.display=list.length?'none':'block';
+    if(idx) stats.textContent=list.length.toLocaleString()+' of '+idx.total.toLocaleString()+' published opportunities'+(all.length<idx.total?' ('+all.length.toLocaleString()+' loaded so far)':'');
+  }
+  var deb; function onFilter(){clearTimeout(deb);deb=setTimeout(function(){render(true);},150);}
+  q.addEventListener('input',onFilter); fam.addEventListener('change',onFilter);
+  more.addEventListener('click',function(){render(false);});
+
+  fetch('data/index.json').then(function(r){return r.json();}).then(function(ix){
+    idx=ix;
+    document.getElementById('updated').textContent='updated '+new Date(ix.generated_at).toISOString().slice(0,16).replace('T',' ')+' UTC';
+    Object.keys(ix.families).forEach(function(f){
+      var o=document.createElement('option');o.value=f;o.textContent=f+' ('+ix.families[f].toLocaleString()+')';fam.appendChild(o);
+    });
+    // Lazy sequential chunk loading: first chunk renders immediately, rest stream in.
+    // At full-inventory scale (500K+ rows) we auto-stream only the first AUTO_CHUNKS
+    // chunks; searching or clicking "Load full catalog" resumes streaming to the end.
+    var i=0, AUTO_CHUNKS=50, streamAll=ix.chunks.length<=AUTO_CHUNKS, loading=false;
+    var fullBtn=document.createElement('button');
+    fullBtn.className='more'; fullBtn.style.display='none';
+    fullBtn.textContent='Load full catalog ('+ix.total.toLocaleString()+' rows — large download)';
+    more.parentNode.insertBefore(fullBtn,more.nextSibling);
+    fullBtn.addEventListener('click',function(){streamAll=true;fullBtn.style.display='none';loadNext();});
+    q.addEventListener('input',function(){if(!streamAll){streamAll=true;fullBtn.style.display='none';loadNext();}});
+    function loadNext(){
+      if(loading) return;
+      if(i>=ix.chunks.length) return;
+      if(!streamAll && i>=AUTO_CHUNKS){fullBtn.style.display='block';return;}
+      loading=true;
+      fetch('data/'+ix.chunks[i]).then(function(r){return r.json();}).then(function(rows){
+        all=all.concat(rows); i++; loading=false;
+        if(i===1){render(true);}
+        else if(q.value||fam.value){render(true);}
+        else{var n=filtered().length;more.style.display=shown<n?'block':'none';
+             stats.textContent=n.toLocaleString()+' of '+idx.total.toLocaleString()+' published opportunities'+(all.length<idx.total?' ('+all.length.toLocaleString()+' loaded so far)':'');}
+        setTimeout(loadNext,50);
+      }).catch(function(){loading=false;setTimeout(loadNext,2000);});
+    }
+    loadNext();
+  }).catch(function(){stats.textContent='Catalog data failed to load — please retry.';});
+})();
+</script>
+</body>
+</html>
