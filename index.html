@@ -47,6 +47,9 @@ header{padding:28px 0;display:flex;justify-content:space-between;align-items:cen
 .empty{color:var(--dim);text-align:center;padding:40px 0;font-size:14px}
 .honest{border:1px solid var(--panel-b);border-left:3px solid var(--warn);border-radius:10px;padding:14px 16px;margin:22px 0;font-size:13px;color:var(--dim)}
 .honest strong{color:var(--txt)}
+.golive{border:1px solid rgba(94,234,212,.45);background:rgba(94,234,212,.055);border-radius:14px;padding:20px;margin:22px 0}
+.golive h2{font-size:20px;margin-bottom:6px}.golive p{font-size:13px;color:var(--dim);margin:8px 0}
+.golive ul{font-size:12px;color:var(--dim);padding-left:20px;margin:10px 0}.golive .status{font:11px var(--mono);color:var(--acc);letter-spacing:.08em;text-transform:uppercase}
 .finderbox{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border:1px solid rgba(94,234,212,.3);background:rgba(94,234,212,.04);border-radius:10px;padding:14px 16px;margin:12px 0 22px;font-size:13px;color:var(--dim)}
 .finderbox strong{color:var(--acc)}
 .finderlink{display:inline-block;border:1px solid var(--acc);color:var(--acc);border-radius:8px;padding:7px 12px;text-decoration:none;font:12px var(--mono)}
@@ -64,18 +67,31 @@ footer a{color:var(--dim)}
 
   <div class="hero">
     <h1>Opportunity <em>Catalog</em></h1>
-    <p>Every entry below comes verbatim from the AQAGI production catalog — real productized service opportunities with honest descriptions and transparent entry prices. Estimates, where shown, are estimates.</p>
-    <div class="stats" id="stats">Loading catalog…</div>
+    <p>Every entry below comes verbatim from the AQAGI production catalog â€” real productized service opportunities with honest descriptions and transparent entry prices. Estimates, where shown, are estimates.</p>
+    <div class="stats" id="stats">Loading catalogâ€¦</div>
   </div>
 
   <div class="honest"><strong>Honesty note.</strong> Descriptions and prices are published exactly as generated in our catalog database. Profit figures, when present, are model estimates, not guarantees.</div>
+  <section class="golive" id="go-live-offer">
+    <div class="status">Controlled GO-LIVE Â· $0 public-catalog envelope</div>
+    <h2>Structured Transcription and Notes for Family-Office Investment Teams</h2>
+    <p>An AI-assisted, human-reviewed service that converts customer-authorized meeting audio into structured notes, action items, and a traceable source index. The service does not provide investment, legal, or tax advice.</p>
+    <ul>
+      <li>You must have the right and consent to provide every recording.</li>
+      <li>Human quality review is required before delivery.</li>
+      <li>Confidentiality, retention, deletion, access, delivery, revision, refund, and support terms are agreed before work starts.</li>
+      <li>Demand, conversion, capacity, contribution margin, and time-to-cash are not yet proven.</li>
+    </ul>
+    <p><strong>Request a scoped assessment.</strong> No payment or production work begins until terms, authority, capacity, and privacy requirements are confirmed.</p>
+    <a class="btn" href="mailto:egitto3000@gmail.com?subject=Scoped%20assessment%20request%3A%20Structured%20Transcription%20and%20Notes">Request assessment</a>
+  </section>
   <div class="finderbox">
     <div><strong>Live Finder:</strong> search the complete 518,390-row estate through AQAGI's private Finder. The secure AQAGI SSH tunnel must be active; this public catalog remains a safe static snapshot.</div>
-    <a class="finderlink" id="liveFinder" href="http://127.0.0.1:8903/" rel="noopener">Open Live Finder →</a>
+    <a class="finderlink" id="liveFinder" href="http://127.0.0.1:8903/" rel="noopener">Open Live Finder â†’</a>
   </div>
 
   <div class="controls">
-    <input id="q" type="search" placeholder="Search titles &amp; descriptions…" aria-label="Search">
+    <input id="q" type="search" placeholder="Search titles &amp; descriptionsâ€¦" aria-label="Search">
     <select id="fam" aria-label="Family filter"><option value="">All families</option></select>
   </div>
 
@@ -96,7 +112,7 @@ footer a{color:var(--dim)}
       fam=document.getElementById('fam'), more=document.getElementById('more'),
       stats=document.getElementById('stats'), empty=document.getElementById('empty');
   function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
-  function fmt(n){return n==null?'—':'$'+Number(n).toFixed(2);}
+  function fmt(n){return n==null?'â€”':'$'+Number(n).toFixed(2);}
   function filtered(){
     var t=q.value.trim().toLowerCase(), f=fam.value;
     return all.filter(function(o){
@@ -110,7 +126,7 @@ footer a{color:var(--dim)}
     var finder='http://127.0.0.1:8903/?q='+encodeURIComponent(o.title||o.family||'');
     return '<div class="card"><span class="pill">'+esc(o.family)+'</span>'+
       '<h3>'+esc(o.title)+'</h3>'+
-      '<div class="desc">'+esc(o.excerpt)+(o.excerpt&&o.excerpt.length>=280?'…':'')+'</div>'+
+      '<div class="desc">'+esc(o.excerpt)+(o.excerpt&&o.excerpt.length>=280?'â€¦':'')+'</div>'+
       '<div class="price">'+fmt(o.price)+' <small>entry</small></div>'+
       '<div class="row"><a class="btn" href="https://egitto3000.github.io/aqagi-credits/" rel="noopener">Get started</a>'+
       '<a class="btn sec" href="'+mail+'">Custom&nbsp;quote</a></div>'+
@@ -145,7 +161,7 @@ footer a{color:var(--dim)}
     var i=0, AUTO_CHUNKS=50, streamAll=ix.chunks.length<=AUTO_CHUNKS, loading=false;
     var fullBtn=document.createElement('button');
     fullBtn.className='more'; fullBtn.style.display='none';
-    fullBtn.textContent='Load full catalog ('+ix.total.toLocaleString()+' rows — large download)';
+    fullBtn.textContent='Load full catalog ('+ix.total.toLocaleString()+' rows â€” large download)';
     more.parentNode.insertBefore(fullBtn,more.nextSibling);
     fullBtn.addEventListener('click',function(){streamAll=true;fullBtn.style.display='none';loadNext();});
     q.addEventListener('input',function(){if(!streamAll){streamAll=true;fullBtn.style.display='none';loadNext();}});
@@ -164,7 +180,7 @@ footer a{color:var(--dim)}
       }).catch(function(){loading=false;setTimeout(loadNext,2000);});
     }
     loadNext();
-  }).catch(function(){stats.textContent='Catalog data failed to load — please retry.';});
+  }).catch(function(){stats.textContent='Catalog data failed to load â€” please retry.';});
 })();
 </script>
 </body>
