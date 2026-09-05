@@ -47,6 +47,10 @@ header{padding:28px 0;display:flex;justify-content:space-between;align-items:cen
 .empty{color:var(--dim);text-align:center;padding:40px 0;font-size:14px}
 .honest{border:1px solid var(--panel-b);border-left:3px solid var(--warn);border-radius:10px;padding:14px 16px;margin:22px 0;font-size:13px;color:var(--dim)}
 .honest strong{color:var(--txt)}
+.finderbox{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border:1px solid rgba(94,234,212,.3);background:rgba(94,234,212,.04);border-radius:10px;padding:14px 16px;margin:12px 0 22px;font-size:13px;color:var(--dim)}
+.finderbox strong{color:var(--acc)}
+.finderlink{display:inline-block;border:1px solid var(--acc);color:var(--acc);border-radius:8px;padding:7px 12px;text-decoration:none;font:12px var(--mono)}
+.finderlink:hover{background:rgba(94,234,212,.1)}
 footer{border-top:1px solid var(--panel-b);margin-top:48px;padding:24px 0 40px;font-size:12px;color:var(--dim);display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
 footer a{color:var(--dim)}
 </style>
@@ -65,6 +69,10 @@ footer a{color:var(--dim)}
   </div>
 
   <div class="honest"><strong>Honesty note.</strong> Descriptions and prices are published exactly as generated in our catalog database. Profit figures, when present, are model estimates, not guarantees.</div>
+  <div class="finderbox">
+    <div><strong>Live Finder:</strong> search the complete 518,390-row estate through AQAGI's private Finder. The secure AQAGI SSH tunnel must be active; this public catalog remains a safe static snapshot.</div>
+    <a class="finderlink" id="liveFinder" href="http://127.0.0.1:8903/" rel="noopener">Open Live Finder →</a>
+  </div>
 
   <div class="controls">
     <input id="q" type="search" placeholder="Search titles &amp; descriptions…" aria-label="Search">
@@ -99,12 +107,14 @@ footer a{color:var(--dim)}
   }
   function card(o){
     var mail='mailto:egitto3000@gmail.com?subject='+encodeURIComponent('Custom engagement: '+o.ref);
+    var finder='http://127.0.0.1:8903/?q='+encodeURIComponent(o.title||o.family||'');
     return '<div class="card"><span class="pill">'+esc(o.family)+'</span>'+
       '<h3>'+esc(o.title)+'</h3>'+
       '<div class="desc">'+esc(o.excerpt)+(o.excerpt&&o.excerpt.length>=280?'…':'')+'</div>'+
       '<div class="price">'+fmt(o.price)+' <small>entry</small></div>'+
       '<div class="row"><a class="btn" href="https://egitto3000.github.io/aqagi-credits/" rel="noopener">Get started</a>'+
-      '<a class="btn sec" href="'+mail+'">Custom&nbsp;quote</a></div></div>';
+      '<a class="btn sec" href="'+mail+'">Custom&nbsp;quote</a></div>'+
+      '<a class="btn sec" href="'+finder+'" rel="noopener">Search in Live Finder</a></div>';
   }
   function render(reset){
     var list=filtered();
@@ -116,12 +126,15 @@ footer a{color:var(--dim)}
     empty.style.display=list.length?'none':'block';
     if(idx) stats.textContent=list.length.toLocaleString()+' of '+idx.total.toLocaleString()+' published opportunities'+(all.length<idx.total?' ('+all.length.toLocaleString()+' loaded so far)':'');
   }
-  var deb; function onFilter(){clearTimeout(deb);deb=setTimeout(function(){render(true);},150);}
+  function updateFinderLink(){document.getElementById('liveFinder').href='http://127.0.0.1:8903/?q='+encodeURIComponent(q.value.trim());}
+  var deb; function onFilter(){updateFinderLink();clearTimeout(deb);deb=setTimeout(function(){render(true);},150);}
   q.addEventListener('input',onFilter); fam.addEventListener('change',onFilter);
   more.addEventListener('click',function(){render(false);});
 
   fetch('data/index.json').then(function(r){return r.json();}).then(function(ix){
     idx=ix;
+    var initial=new URLSearchParams(location.search).get('q')||'';
+    if(initial){q.value=initial;updateFinderLink();}
     document.getElementById('updated').textContent='updated '+new Date(ix.generated_at).toISOString().slice(0,16).replace('T',' ')+' UTC';
     Object.keys(ix.families).forEach(function(f){
       var o=document.createElement('option');o.value=f;o.textContent=f+' ('+ix.families[f].toLocaleString()+')';fam.appendChild(o);
