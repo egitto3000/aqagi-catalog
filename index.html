@@ -67,13 +67,13 @@ footer a{color:var(--dim)}
 
   <div class="hero">
     <h1>Opportunity <em>Catalog</em></h1>
-    <p>Every entry below comes verbatim from the AQAGI production catalog â€” real productized service opportunities with honest descriptions and transparent entry prices. Estimates, where shown, are estimates.</p>
-    <div class="stats" id="stats">Loading catalogâ€¦</div>
+    <p>Every entry below comes verbatim from the AQAGI production catalog &mdash; real productized service opportunities with honest descriptions and transparent entry prices. Estimates, where shown, are estimates.</p>
+    <div class="stats" id="stats">Loading catalog&hellip;</div>
   </div>
 
   <div class="honest"><strong>Honesty note.</strong> Descriptions and prices are published exactly as generated in our catalog database. Profit figures, when present, are model estimates, not guarantees.</div>
   <section class="golive" id="go-live-offer">
-    <div class="status">Controlled GO-LIVE Â· $0 public-catalog envelope</div>
+    <div class="status">Controlled GO-LIVE &middot; $0 public-catalog envelope</div>
     <h2>Structured Transcription and Notes for Family-Office Investment Teams</h2>
     <p>An AI-assisted, human-reviewed service that converts customer-authorized meeting audio into structured notes, action items, and a traceable source index. The service does not provide investment, legal, or tax advice.</p>
     <ul>
@@ -87,11 +87,11 @@ footer a{color:var(--dim)}
   </section>
   <div class="finderbox">
     <div><strong>Live Finder:</strong> search the complete 518,390-row estate through AQAGI's private Finder. The secure AQAGI SSH tunnel must be active; this public catalog remains a safe static snapshot.</div>
-    <a class="finderlink" id="liveFinder" href="http://127.0.0.1:8903/" rel="noopener">Open Live Finder â†’</a>
+    <a class="finderlink" id="liveFinder" href="http://127.0.0.1:8903/" rel="noopener">Open Live Finder &rarr;</a>
   </div>
 
   <div class="controls">
-    <input id="q" type="search" placeholder="Search titles &amp; descriptionsâ€¦" aria-label="Search">
+    <input id="q" type="search" placeholder="Search titles &amp; descriptions&hellip;" aria-label="Search">
     <select id="fam" aria-label="Family filter"><option value="">All families</option></select>
   </div>
 
@@ -112,7 +112,7 @@ footer a{color:var(--dim)}
       fam=document.getElementById('fam'), more=document.getElementById('more'),
       stats=document.getElementById('stats'), empty=document.getElementById('empty');
   function esc(s){var d=document.createElement('div');d.textContent=s==null?'':String(s);return d.innerHTML;}
-  function fmt(n){return n==null?'â€”':'$'+Number(n).toFixed(2);}
+  function fmt(n){return n==null?'\u2014':'$'+Number(n).toFixed(2);}
   function filtered(){
     var t=q.value.trim().toLowerCase(), f=fam.value;
     return all.filter(function(o){
@@ -126,7 +126,7 @@ footer a{color:var(--dim)}
     var finder='http://127.0.0.1:8903/?q='+encodeURIComponent(o.title||o.family||'');
     return '<div class="card"><span class="pill">'+esc(o.family)+'</span>'+
       '<h3>'+esc(o.title)+'</h3>'+
-      '<div class="desc">'+esc(o.excerpt)+(o.excerpt&&o.excerpt.length>=280?'â€¦':'')+'</div>'+
+      '<div class="desc">'+esc(o.excerpt)+(o.excerpt&&o.excerpt.length>=280?'\u2026':'')+'</div>'+
       '<div class="price">'+fmt(o.price)+' <small>entry</small></div>'+
       '<div class="row"><a class="btn" href="https://egitto3000.github.io/aqagi-credits/" rel="noopener">Get started</a>'+
       '<a class="btn sec" href="'+mail+'">Custom&nbsp;quote</a></div>'+
@@ -161,7 +161,7 @@ footer a{color:var(--dim)}
     var i=0, AUTO_CHUNKS=50, streamAll=ix.chunks.length<=AUTO_CHUNKS, loading=false;
     var fullBtn=document.createElement('button');
     fullBtn.className='more'; fullBtn.style.display='none';
-    fullBtn.textContent='Load full catalog ('+ix.total.toLocaleString()+' rows â€” large download)';
+    fullBtn.textContent='Load full catalog ('+ix.total.toLocaleString()+' rows \u2014 large download)';
     more.parentNode.insertBefore(fullBtn,more.nextSibling);
     fullBtn.addEventListener('click',function(){streamAll=true;fullBtn.style.display='none';loadNext();});
     q.addEventListener('input',function(){if(!streamAll){streamAll=true;fullBtn.style.display='none';loadNext();}});
@@ -180,7 +180,7 @@ footer a{color:var(--dim)}
       }).catch(function(){loading=false;setTimeout(loadNext,2000);});
     }
     loadNext();
-  }).catch(function(){stats.textContent='Catalog data failed to load â€” please retry.';});
+  }).catch(function(){stats.textContent='Catalog data failed to load \u2014 please retry.';});
 })();
 </script>
 </body>
